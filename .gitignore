@@ -1,0 +1,9 @@
+.env
+config/*.env
+!config/config.example.env
+__pycache__/
+*.pyc
+.venv/
+influxdb-data/
+mosquitto/data/
+mosquitto/log/

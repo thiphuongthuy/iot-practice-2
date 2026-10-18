@@ -1,0 +1,23 @@
+services:
+  influxdb:
+    image: influxdb:2.7
+    ports: ["8086:8086"]
+    volumes:
+      - ./influxdb-data:/var/lib/influxdb2
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: admin12345
+      DOCKER_INFLUXDB_INIT_ORG: iot-lab
+      DOCKER_INFLUXDB_INIT_BUCKET: iot_raw
+      DOCKER_INFLUXDB_INIT_RETENTION: 30d
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: change_me_token   # đổi và ghi cùng giá trị vào config/.env
+
+  # Broker cục bộ (tùy chọn): chỉ dùng khi chạy simulator/thiết bị thật cùng mạng LAN.
+  # Bật bằng: docker compose --profile local-broker up -d
+  mosquitto:
+    profiles: ["local-broker"]
+    image: eclipse-mosquitto:2
+    ports: ["1883:1883"]
+    volumes:
+      - ./config/mosquitto.conf:/mosquitto/config/mosquitto.conf
